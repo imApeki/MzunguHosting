@@ -1,0 +1,206 @@
+<title>MzunguHosting - Control Panel</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-10512015-10', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- Global site tag (gtag.js) - Google Ads: 1001536999 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-1001536999"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-1001536999');
+</script>
+<style>
+body{
+    margin:0;
+    cursor: url(meme.png), auto;
+    font-family: Georgia, Serif;
+}
+html { 
+    background: #000;
+    color: #fff;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+#main {
+    background: url(bg3.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+button {
+    width:100%;
+    height:70px;
+    font-size:20px;
+    background:black;
+    color:yellow;
+    cursor:pointer;
+    font-weight:bold;
+}
+td {
+    border:4px solid black;
+    font-size:15px;
+    background:#252525;
+    padding-top:10px;
+    color:white;
+}
+td > h3{
+    color:yellow;
+    width:92%;
+    background:black;
+    padding:10px;
+}
+.login-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100% - 40px);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    flex-direction: column;
+}
+.login-box {
+    background: #fff;
+    padding: 10px 20px;
+    width: 300px;
+    max-width: 100%;
+    color: #000;
+    position: relative;
+}
+input.input {
+    width: 100%;
+    margin-bottom: 15px;
+    height: 30px;
+    padding: 0px 10px;   
+}
+
+.submitbtn {
+    height: 30px;
+    display: inline-flex;
+    width: 100%;
+    background: rgb(202, 50, 50);
+    color: #fff;
+    transition: 0.2s linear all;
+    border: none;
+}
+
+.submitbtn:hover {
+    cursor: pointer;
+    background: rgb(114, 20, 20);
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+</style>
+
+<body>
+    <div class="login-cont">
+        <h1>Control Panel v2</h1>
+        <form id="loginForm" class="login-box">
+            <p>Welcome to our controlpanel. Please sign in to access your service. <br/></br>Default User: <b>admin</b> / Pass: <b>admin</b></b></code></p>
+            
+            <input type="text" name="user" id="username" class="input" placeholder="Username" />
+
+            <input type="text" name="pass" id="password" class="input" placeholder="Password" />
+            
+            <input class="submitbtn" type="submit" value="Log In" />
+
+            <p>
+                Please advise:
+                <ul>
+                    <li>Password now seeable to reduce mistake when logging in</li>
+                </ul>
+            </p>
+
+            <p>New BGM</p>
+<audio src="new.mp3" controls preload loop>
+    <a href = "new.mp3">Music</a>
+  </audio>
+  <p>Old BGM</p>
+    <audio id="classicmusic" src="classic.mp3" controls autoplay preload loop>
+    <a href = "classic.mp3">Classic</a>
+  </audio>
+  <p></p>
+
+            <div id="overlay"></div>
+        </form>
+    </div>
+
+    <script>
+    $(document).ready(function() {
+        $('#loginForm').on('submit', function(e) {
+            e.preventDefault();
+            var username = $('#username').val();
+            var password = $('#password').val();
+
+            if (username.trim() == "" || password.trim() == "") {
+                alert("Please enter username and password");
+                return;
+            }
+
+            var $overlay = $('#overlay');
+            
+            $overlay.show();
+
+            
+
+            function showMessage(message, delay) {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        $overlay.text(message);
+                        resolve();
+                    }, delay);
+                });
+            }
+
+            showMessage("Authenticating...", 1000)
+                .then(() => showMessage(`Checking if username exists: ${username}`, 1500))
+                .then(() => {
+                    if (username === 'admin') {
+                        return showMessage(`User exists, check password ${password}`, 1500);
+                    } else {
+                        return showMessage("User does not exist, return fail to user", 1500);
+                    }
+                })
+                .then(() => {
+                    if (username === 'admin' && password === 'admin') {
+                        return showMessage("Authentication success", 1000);
+                    } else {
+                        return showMessage("Authentication fail", 1000);
+                    }
+                })
+                .then(() => {
+                    if (username === 'admin' && password === 'admin') {
+                        window.location.href = 'dashboard.php';
+                    } else {
+                        $overlay.hide();
+                        alert("Login fail.");
+                    }
+                });
+        });
+    });
+    </script>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "9fbdba2571794280b7ebde38da5166cb"}'></script><!-- Cloudflare Pages Analytics --></body>

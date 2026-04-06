@@ -1,0 +1,342 @@
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-10512015-10', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- Global site tag (gtag.js) - Google Ads: 1001536999 -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1001536999"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'AW-1001536999');
+      </script>
+    <title>Dashboard - admin</title>
+    <style>
+        
+        body {
+            margin: 0;
+            font-family: Georgia, serif;
+        
+            background-image: url(bg3.jpg);
+        }
+
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            display: block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #444;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .sidebar a:hover {
+            background-color: #555;
+        }
+
+        .sidebar a.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+            background-color: #666;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .table-section {
+            margin-bottom: 30px;
+        }
+
+        table {
+            max-width: 100%;
+            width: 500px;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #000;
+        }
+
+        th,
+        td {
+            padding: 2px;
+        }
+
+        tr.clickable {
+            cursor: pointer;
+        }
+
+        tr.selected {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            z-index: 1000;
+            display: none;
+        }
+        #sham {
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            height: 100%;
+            top: 0;
+            background: #fff;
+            left: 0;
+        
+        }
+
+        button.btn {
+            width: 100%;
+            border: none;
+            font-size: 20px;
+            font-family: Georgia, serif;
+        }
+        button.btn:disabled {
+            cursor: not-allowed;
+            pointer-events: none;
+            background-color: #666;
+            opacity: 0.5;
+        }
+    </style>
+
+<body> 
+    <!-- Navbar -->
+    <div class="container">
+        <!-- Sidebar with Admin Actions -->
+        <div class="sidebar">
+            <h3>Admin Actions</h3>
+            <p>Welcome back, <b>admin</b></p>
+            <p>Controlpanel Version 2.0</p>
+            <p>Update Note: Please click on user or server</p>
+            <a href="#" class="btn" data-action="Terminate User" data-applicable="customer"
+                onclick="simulateError('Terminate User'); return false;">Terminate User</a>
+            <a href="#" class="btn" data-action="Report to Authorities" data-applicable="both"
+                onclick="simulateError('Report to Authorities'); return false;">Report to Authorities</a>
+            <a href="#" class="btn" data-action="Reset Server" data-applicable="server"
+                onclick="simulateError('Reset Server'); return false;">Reset Server</a>
+        
+                <p>Logout below</p>
+                <button class="btn logout">Log out</button>
+            </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <div class="table-section">
+                <div class="table-section">
+                    <h2>System status</h2>
+                    <table>
+                        <tr>
+                            <th>Item</th>
+                            <th>Status</th>
+                        </tr>
+                        <tr>
+                            <td>Inbound</td>
+                            <td><span id="inbound-value">2.02</span> Mbps (OK)</td>
+                        </tr>
+                        <tr>
+                            <td>Outbound</td>
+                            <td><span id="outbound-value">0.52</span> Mbps (OK)</td>
+                        </tr>
+                        <tr>
+                            <td>Main Website</td>
+                            <td>OK</td>
+                        </tr>
+                        <tr>
+                            <td>DataCenter Celsius</td>
+                            <td><span id="temperature-value">39.8</span>°C (OK)</td>
+                        </tr>
+                    </table>
+                </div>
+                
+            <div class="table-section">
+                <h2>Customer</h2>
+                <table>
+                    <tr>
+                        <th>Customer ID</th>
+                        <th>Customer Name</th>
+                    </tr>
+                    <tr class="clickable" onclick="selectRow('customer', 'C001', this)">
+                        <td>C001</td>
+                        <td>Mabel R.</td>
+                    </tr>
+                    <tr class="clickable" onclick="selectRow('customer', 'C002', this)">
+                        <td>C002</td>
+                        <td>Lan H.</td>
+                    </tr>
+                    <tr class="clickable" onclick="selectRow('customer', 'C003', this)">
+                        <td>C003</td>
+                        <td>Victoria S.</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="table-section">
+                <h2>Server</h2>
+                <table>
+                    <tr>
+                        <th>Server ID</th>
+                        <th>CID owned by</th>
+                        <th>IP</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr class="clickable" onclick="selectRow('server', 'S001', this)">
+                        <td>S001</td>
+                        <td>C001</td>
+                        <td>10.0.1.3</td>
+                        <td>Online</td>
+                    </tr>
+                    <tr class="clickable" onclick="selectRow('server', 'S002', this)">
+                        <td>S002</td>
+                        <td>C002</td>
+                        <td>10.0.1.22</td>
+                        <td>Online</td>
+                    </tr>
+                    <tr class="clickable" onclick="selectRow('server', 'S003', this)">
+                        <td>S003</td>
+                        <td>C003</td>
+                        <td>10.0.1.55</td>
+                        <td>Online</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div> 
+    
+    <div id="loadingScreen" class="loading-screen"> Loading... </div>
+    
+    <div id="sham" style="display:none"></div>
+
+    <script> 
+        function getRandomValue(min, max, decimals) {
+            return (Math.random() * (max - min) + min).toFixed(decimals);
+        }
+        
+        function updateTable() {
+            $('#inbound-value').text(getRandomValue(0.01, 2.5, 2));
+            $('#outbound-value').text(getRandomValue(0.01, 2.5, 2));
+            $('#temperature-value').text(getRandomValue(39.7, 40, 1));
+        }
+        
+        $(document).ready(function() {
+            updateTable(); 
+            setInterval(updateTable, 5000); // upd: 5s
+        });
+        
+        $(".logout").click(function() {
+            $(".logout").prop("disabled", true);
+            $(".logout").html("Logging out...");
+            setTimeout(function() {
+                window.location.replace("login.html");
+            }, 2000);
+        });
+        var currentSelection = null; // Called when a table row is clicked 
+
+        function selectRow(type, id, row) {
+            var rows = document.querySelectorAll('tr.clickable'); 
+            rows.forEach(function(r) { 
+                r.classList.remove('selected'); 
+            }); 
+            row.classList.add('selected'); 
+            currentSelection = { type: type, id: id }; 
+            updateAdminActionsState(); 
+        } 
+            
+        function updateAdminActionsState() { 
+            var links = document.querySelectorAll('.sidebar a'); 
+            links.forEach(function(link) { 
+                var applicable = link.getAttribute('data-applicable'); 
+                if (!currentSelection) {
+                    link.classList.add('disabled'); 
+                } else { 
+                    if (applicable === 'both' || applicable === currentSelection.type) { 
+                        link.classList.remove('disabled'); 
+                    } else { 
+                        link.classList.add('disabled'); 
+                    } 
+                } 
+            }); 
+        } 
+
+        function simulateError(action) { 
+            var loadingScreen = document.getElementById('loadingScreen'); 
+
+            if (!currentSelection) {
+                loadingScreen.style.display = 'flex'; 
+                setTimeout(function() { 
+                    loadingScreen.style.display = 'none'; 
+                }, 2000);
+                return; 
+            }
+            if ((action === 'Terminate User' && currentSelection.type !== 'customer') || (action === 'Reset Server' && currentSelection.type !== 'server')) { 
+                loadingScreen.style.display = 'flex'; 
+                setTimeout(function() { 
+                    loadingScreen.style.display = 'none'; 
+                }, 2000);
+                return; 
+            } 
+            if (currentSelection.type === 'customer') { 
+                table = 'customers'; field = 'customer_id'; 
+            } else { 
+                table = 'servers'; field = 'server_id'; 
+            } 
+            var query = `SELECT * FROM ${table} WHERE ${field}='${currentSelection.id}'`; 
+
+            loadingScreen.style.display = 'flex'; 
+
+            setTimeout(function() { 
+                loadingScreen.style.display = 'none'; 
+
+                $("#sham").html("<style>.error-container{padding:50px 40px;font-family:\"Helvetica Neue\",Helvetica,Arial,sans-serif;font-size:14px}h1{margin:0;font-size:48px;font-weight:400}h2{margin:0;font-size:26px;font-weight:300}a{color:#369}p.back-to-home{margin-top:30px}p.debug{padding:20px 0;font-family:\"Courier New\",Courier,monospace,serif;font-size:14px}.info{border:solid 1px #999;padding:5px;background-color:#d9edf7}</style><div class=error-container><h1>Critical Error</h1><p>Could not execute \"" + query + "\"</div>");
+                $("#sham").show();
+            }, 2000);
+        } 
+        updateAdminActionsState();
+    </script>
+</body>
